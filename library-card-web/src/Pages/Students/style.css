@@ -1,0 +1,83 @@
+.students-container{
+    width: 95vw;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+.students-content{
+    background-color: #00a859;
+    border: 1px solid black;
+    width: 300px;
+    height: 170px;
+}
+
+.students-container img {
+    z-index: 1;
+}
+
+.students-photo{
+    position: absolute;
+    margin-top: 8px;
+    margin-left: 8px;
+    background: #ffffff;
+
+    border: 1px solid black;
+    width: 100px;
+    height: 116px;
+}
+
+.students-input{
+    position: absolute;
+    margin-left: 118px;
+    margin-top: 29px;
+    display: flex;
+    flex-direction: column;
+}
+
+.students-input label{
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+.students-input input {
+    border: none;
+    background: #ffffff;
+    border: 1px solid black;
+
+    border-radius: 5px;
+    width: 164px;
+    height: 20px;
+}
+
+.students-title-course{
+    margin-top: 5.5px;
+}
+
+.students-input-info{
+    position:absolute;
+    margin-top: 135px;
+}
+
+.students-input-info input {
+    border: 1px solid black;
+}
+
+.students-input-info label{
+    color: white;
+    font-size: 8px;
+}
+
+.students-registration{
+    margin-left: 20px;
+    width: 74px;
+    margin-right: 69px;
+    border-radius: 5px;
+}
+
+.students-validate{
+    border-radius: 5px;
+    width: 56px;
+
+}
