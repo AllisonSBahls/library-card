@@ -1,8 +1,44 @@
-.navbar{
+nav{
+    background: #00a859;
     width: 100vw;
-    height: 80px;
-    background-color: #00a859;
-    display: flex;
+    height:80px;
+    color: var(--ligh-color);
+    align-items: center;
+}
+
+.navbar-title{
+    float: left;
+    font-size: 25px;
+    white-space: nowrap;
+    line-height: 80px;
+    font-weight: bold;
+    margin-left: 30px;
+}
+
+
+nav ul {
+    list-style: none;
+    float:right;
+}
+
+nav ul li{
+    
+    display: inline-block;
+	line-height: 80px;
+}
+
+nav ul li a{
     color: white;
-    font: 15px;
+    border-radius: 4px;
+    font-size: 18px;
+    margin-right: 30px;
+    padding: 6px 15px
+}
+.navbar-menu-logout{
+    display: none;
+}
+
+a.active, a:hover {
+	background: #12663f;
+	transition: .5s;
 }
