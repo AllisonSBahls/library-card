@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCardAPI.Utils
 {
-    public class SearchPageDTO
+    public class SearchPageDTO<T>
     {
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }

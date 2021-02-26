@@ -29,7 +29,6 @@ namespace LibraryCardAPI.Repository
             }
         }
 
-
         public Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset)
         {
             throw new NotImplementedException();
