@@ -7,5 +7,12 @@ namespace LibraryCardAPI.DTO
 {
     public class StudentDTO
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public String  Course { get; set; }
+        public int RegistrationNumber { get; set; }
+        public string Photo { get; set; }
+        public string Validate { get; set; }
+
     }
 }
