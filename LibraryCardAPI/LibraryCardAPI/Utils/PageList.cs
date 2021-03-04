@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCardAPI.Utils
 {
-    public class PageList<T> : List<T>
+    public class PageList<T>
     {
        
         public int CurrentPage { get; set; }

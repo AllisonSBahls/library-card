@@ -24,29 +24,10 @@ namespace LibraryCardAPI.Repository
 
         public async Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset)
         {
-            var result = _context.Students.Where(s => s.Name.Contains(name));
+            var result = _context.Students.Where(s => s.Name.Contains(name)).OrderBy(x => x.Name).Skip(offset).Take(size);
+           
+            return await result.ToListAsync();
 
-            return await result.OrderBy(n => n.Name).Skip(offset).Take(size).ToListAsync();
-
-        }
-
-        public async Task CreateStudentsAsync(Student student)
-        {
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateStudentsAsync(Student item, Student student)
-        {
-            _context.Entry(item).CurrentValues.SetValues(student);
-                await _context.SaveChangesAsync();
-
-        }
-        public async Task DeleteStudentsAsync(Student student)
-        {
-
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
         }
 
         public int GetCount(string name)

@@ -11,7 +11,7 @@ namespace LibraryCardAPI.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class StudentsController : Controller
+    public class StudentsController : ControllerBase
     {
         private readonly IStudentService _service;
 

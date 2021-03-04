@@ -42,12 +42,13 @@ namespace LibraryCardAPI.Service
                 var sort = (!string.IsNullOrWhiteSpace(sortDirection) && !sortDirection.Equals("desc")) ? "asc" : "desc";
                 var size = (pageSize < 1) ? 10 : pageSize;
                 var offset = page > 0 ? (page - 1) * size : 0;
-                var students = await _repository.FindWithPagedSearchName(name, size, offset);
-                
-                if( students == null)
+
+                if (string.IsNullOrEmpty(name))
                 {
-                    return null;
+                    name = " ";
                 }
+
+                var students = await _repository.FindWithPagedSearchName(name, size, offset);
 
                 var totalResult = _repository.GetCount(name);
 
