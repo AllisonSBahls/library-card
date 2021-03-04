@@ -12,6 +12,6 @@ namespace LibraryCardAPI.Models
         public String  Course { get; set; }
         public int RegistrationNumber { get; set; }
         public string Photo { get; set; }
-        public string Validate { get; set; }
+        public DateTime Validate { get; set; }
     }
 }

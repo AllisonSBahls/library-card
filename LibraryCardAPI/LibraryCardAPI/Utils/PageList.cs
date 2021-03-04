@@ -7,30 +7,40 @@ namespace LibraryCardAPI.Utils
 {
     public class PageList<T> : List<T>
     {
+       
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int TotalResults { get; set; }
+        public string SortFields { get; set; }
         public string SortDirections { get; set; }
-        public int TotalPages { get; set; }
-        public bool HasPrevious => CurrentPage > 1;
-        public bool HasNext => CurrentPage < TotalResults;
-    
-        public PageList(List<T> items, int count, int pageNumer, int pageSize)
+        public Dictionary<string, Object> Filters { get; set; }
+        public List<T> List { get; set; }
+
+        public PageList(){}
+
+        public PageList(int currentPage, int pageSize, string sortFields, string sortDirections)
         {
-            TotalResults = count;
+            CurrentPage = currentPage;
             PageSize = pageSize;
-            CurrentPage = pageNumer;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-            AddRange(items);
+            SortFields = sortFields;
+            SortDirections = sortDirections;
         }
 
-        public static PageList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+        public PageList(int currentPage, int pageSize, string sortFields, string sortDirections, Dictionary<string, object> filters) : this(currentPage, pageSize, sortFields, sortDirections)
         {
-            var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            return new PageList<T>(items, count, pageNumber, pageSize);
+            Filters = filters;
         }
 
+        public PageList(int currentPage, string sortFields, string sortDirections) : this(currentPage, 10, sortFields, sortDirections){}
+
+        public int GetCurrentPage()
+        {
+            return CurrentPage == 0 ? 2 : CurrentPage;
+        }
+
+        public int GetPageSize()
+        {
+            return PageSize == 0 ? 10 : PageSize;
+        }
     }
 }

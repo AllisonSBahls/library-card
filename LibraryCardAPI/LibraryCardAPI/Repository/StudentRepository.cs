@@ -1,5 +1,7 @@
 ﻿using LibraryCardAPI.Models;
 using LibraryCardAPI.Repository.Context;
+using LibraryCardAPI.Repository.Generic;
+using LibraryCardAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,79 +10,48 @@ using System.Threading.Tasks;
 
 namespace LibraryCardAPI.Repository
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentRepository : GenericRepository, IStudentRepository
     {
-        private readonly LibraryCardContext _context;
-
-        public StudentRepository(LibraryCardContext context)
-        {
-            _context = context;
-        }
+        public StudentRepository(LibraryCardContext context) : base(context) { }
+      
 
         public async Task<Student> FindByIdAsync(int id)
         {
-            try
-            {
-                var result = await _context.Students.SingleOrDefaultAsync(p => p.Id.Equals(id));
-                return result;
-            } catch (Exception e)
-            {
-                throw new Exception("Error return students: " + e.Message);
-            }
+            var result = await _context.Students.SingleOrDefaultAsync(p => p.Id.Equals(id));
+            return result;
+
         }
 
-        public Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset)
+        public async Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset)
         {
-            throw new NotImplementedException();
-        }
+            var result = _context.Students.Where(s => s.Name.Contains(name));
 
-        public Task<List<Student>> FindWithPagedSearchValidate(DateTime initialDate, DateTime finalDate, int size, int offset)
-        {
-            throw new NotImplementedException();
+            return await result.OrderBy(n => n.Name).Skip(offset).Take(size).ToListAsync();
+
         }
 
         public async Task CreateStudentsAsync(Student student)
         {
-            try { 
-                _context.Students.Add(student);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error insert students: " + e.Message);
-            }
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateStudentsAsync(Student item, Student student)
         {
-            try
-            {
-                _context.Entry(item).CurrentValues.SetValues(student);]
+            _context.Entry(item).CurrentValues.SetValues(student);
                 await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error update students: " + e.Message);
 
-            }
         }
         public async Task DeleteStudentsAsync(Student student)
         {
-            try
-            {
-                _context.Students.Remove(student);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error in delete students: " + e.Message);
-                ;
-            }
+
+            _context.Students.Remove(student);
+            await _context.SaveChangesAsync();
         }
 
-        public int GetCount(int id, string name, DateTime? validate)
+        public int GetCount(string name)
         {
-            throw new NotImplementedException();
+            return _context.Students.Where(x => x.Name.Contains(name)).Count();
         }
 
     }

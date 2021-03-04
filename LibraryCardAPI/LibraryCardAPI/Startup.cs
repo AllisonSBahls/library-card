@@ -1,4 +1,7 @@
+using LibraryCardAPI.Repository;
 using LibraryCardAPI.Repository.Context;
+using LibraryCardAPI.Repository.Generic;
+using LibraryCardAPI.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +32,10 @@ namespace LibraryCardAPI
         {
             services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
             services.AddControllers();
+            services.AddScoped<IStudentService, StudentService>();
+
+            services.AddScoped(typeof(IRepository), typeof(GenericRepository));
+            services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
