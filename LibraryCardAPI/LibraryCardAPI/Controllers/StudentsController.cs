@@ -27,7 +27,6 @@ namespace LibraryCardAPI.Controllers
             try
             {
                 var result = await _service.FindWithPagedSearchName(name, sortDirection, pageSize, page);
-                if (result == null) return NotFound("No student found");
                 return Ok(result);
             }catch (Exception ex)
             {
@@ -63,6 +62,37 @@ namespace LibraryCardAPI.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in search the students: {ex.Message} ");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, Student student)
+        {
+            try
+            {
+                var result = await _service.UpdateStudentsAsync(id, student);
+                if (result == null) return BadRequest("Error in update the student");
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in update the students: {ex.Message} ");
+            }
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                return await _service.DeleteStudentsAsync(id) ? 
+                    Ok("Deleted") : 
+                    BadRequest("Student not delete");
+;
+            }catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in delete the student: {ex.Message}");
             }
         }
     }
