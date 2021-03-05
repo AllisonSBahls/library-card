@@ -8,6 +8,6 @@ namespace LibraryCardAPI.Models
 {
     public class User : IdentityUser<int>
     {
-        public int FullName { get; set; }
+        public string FullName { get; set; }
     }
 }

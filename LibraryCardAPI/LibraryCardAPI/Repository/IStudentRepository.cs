@@ -12,5 +12,6 @@ namespace LibraryCardAPI.Repository
         Task<Student> FindByIdAsync(int id);
         Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset);
         int GetCount(string name);
+        void RenewValidateStudent(Student student);
     }
 }

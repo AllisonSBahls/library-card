@@ -13,6 +13,7 @@ namespace LibraryCardAPI.Service
         Task<Student> UpdateStudentsAsync(int id, Student student);
         Task<Student> FindByIdAsync(int id);
         Task<PageList<Student>> FindWithPagedSearchName(string name, string sortDirection, int pageSize, int page);
+        Task<Student> RenewValidateStudent(int id, Student student);
         Task<bool> DeleteStudentsAsync(int id);
     }
 }

@@ -35,5 +35,10 @@ namespace LibraryCardAPI.Repository
             return _context.Students.Where(x => x.Name.Contains(name)).Count();
         }
 
+        public void RenewValidateStudent(Student student)
+        {
+            _context.Students.Attach(student);
+            _context.Entry(student).Property(x => x.Validate).IsModified = true;
+        }
     }
 }

@@ -125,5 +125,24 @@ namespace LibraryCardAPI.Service
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<Student> RenewValidateStudent(int id, Student student)
+        {
+            try
+            {
+                var renewValidade = new Student() { Id = id, Validate = student.Validate };
+                _repository.RenewValidateStudent(renewValidade);
+                if (await _repository.SaveChangesAsync())
+                {
+                    return await _repository.FindByIdAsync(student.Id);
+                }
+
+                return null;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

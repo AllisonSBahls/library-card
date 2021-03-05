@@ -15,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+
 
 namespace LibraryCardAPI
 {
@@ -32,6 +34,9 @@ namespace LibraryCardAPI
         {
             services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
             services.AddControllers();
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<IStudentService, StudentService>();
 
             services.AddScoped(typeof(IRepository), typeof(GenericRepository));

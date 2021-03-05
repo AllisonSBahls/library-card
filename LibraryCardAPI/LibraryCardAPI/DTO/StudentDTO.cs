@@ -9,7 +9,7 @@ namespace LibraryCardAPI.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public String  Course { get; set; }
+        public string  Course { get; set; }
         public int RegistrationNumber { get; set; }
         public string Photo { get; set; }
         public string Validate { get; set; }
