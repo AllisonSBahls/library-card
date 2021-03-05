@@ -1,5 +1,6 @@
 ﻿using LibraryCardAPI.Models;
 using LibraryCardAPI.Repository.Context;
+using LibraryCardAPI.Repository.Generic;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,10 @@ using System.Threading.Tasks;
 
 namespace LibraryCardAPI.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository, IUserRepository
     {
-        private readonly LibraryCardContext _context;
-
-        public UserRepository(LibraryCardContext context)
-        {
-            _context = context;
-        }
-
+        public UserRepository(LibraryCardContext context) : base(context) { }
+        
         public async Task<User> FindByIdAsync(int id)
         {
             return await _context.Users.SingleOrDefaultAsync(x => x.Id.Equals(id));

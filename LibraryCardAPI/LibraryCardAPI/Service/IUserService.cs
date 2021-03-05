@@ -10,12 +10,10 @@ namespace LibraryCardAPI.Service
     public interface IUserService
     {
         Task<UserDTO> FindByIdAsync(int id);
-        Task<UserDTO> UpdateAsync(UserDTO user);
-        Task<UserDTO> CreateAsync(UserDTO user);
-        Task<LoginDTO> LoginAsync(LoginDTO user);
-        Task<UserDTO> ChangePassword(int id, UserDTO user);
-        Task DeleteAsync(int id);
-        Task<PageList<UserDTO>> FindWithPageSearch(string name, string sortDirection, int pageSize, int page);
-        bool ValidateToken(string authToken);
+        Task<UserDTO> UpdateUserAsync(int id, UserDTO userDTO);
+        Task<UserDTO> CreateUserAsync(UserDTO userDTO);
+        Task ChangeUserPassword(UserDTO userDTO, string newPassword);
+        Task<bool> DeleteUserAsync(int id);
+        Task<PageList<UserDTO>> FindWithUserFullNamePageSearch(string name, string sortDirection, int pageSize, int page);
     }
 }
