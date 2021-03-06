@@ -1,10 +1,10 @@
-﻿using LibraryCardAPI.DTO;
+﻿using AutoMapper;
+using LibraryCardAPI.DTO;
 using LibraryCardAPI.Models;
 using LibraryCardAPI.Repository;
 using LibraryCardAPI.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LibraryCardAPI.Service
@@ -12,21 +12,21 @@ namespace LibraryCardAPI.Service
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _repository;
+        private readonly IMapper _mapper;
 
-        public StudentService(IStudentRepository repository)
+        public StudentService(IStudentRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public async Task<Student> FindByIdAsync(int id)
+        public async Task<StudentDTO> FindByIdAsync(int id)
         {
             try
             {
-
                 var result = await _repository.FindByIdAsync(id);
                 if (result == null) return null;
-                return result;
-
+                return _mapper.Map<StudentDTO>(result);
             }
             catch (Exception ex)
             {
@@ -35,7 +35,7 @@ namespace LibraryCardAPI.Service
         }
 
 
-        public async Task<PageList<Student>> FindWithPagedSearchName(string name, string sortDirection, int pageSize, int page)
+        public async Task<PageList<StudentDTO>> FindWithPagedSearchName(string name, string sortDirection, int pageSize, int page)
         {
             try
             {
@@ -52,10 +52,10 @@ namespace LibraryCardAPI.Service
 
                 var totalResult = _repository.GetCount(name);
 
-                var searchPage = new PageList<Student>
+                var searchPage = new PageList<StudentDTO>
                 {
                     CurrentPage = page,
-                    List = students,
+                    List = _mapper.Map<List<StudentDTO>>(students),
                     PageSize = size,
                     SortDirections = sort,
                     TotalResults = totalResult
@@ -65,18 +65,18 @@ namespace LibraryCardAPI.Service
             catch (Exception ex)
             {
                 throw new Exception("Error in create students" + ex.Message);
-
             }
         }
 
 
-        public async Task<Student> CreateStudentsAsync(Student student)
+        public async Task<StudentDTO> CreateStudentsAsync(StudentDTO studentDTO)
         {
             try
             {
+                var student = _mapper.Map<Student>(studentDTO);
                 _repository.Add(student);
                 return await _repository.SaveChangesAsync() ?
-                       await _repository.FindByIdAsync(student.Id) :
+                        _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id)) :
                        null;
             }
             catch (Exception ex)
@@ -85,11 +85,12 @@ namespace LibraryCardAPI.Service
             }
         }
 
-        public async Task<Student> UpdateStudentsAsync(int id, Student student)
+        public async Task<StudentDTO> UpdateStudentsAsync(int id, StudentDTO studentDTO)
         {
             try
             {
-                var result = await _repository.FindByIdAsync(id);
+               var student = _mapper.Map<Student>(studentDTO);
+               var result = await _repository.FindByIdAsync(id);
                 if (result == null) throw new Exception("Students for update not found");
 
                 student.Id = result.Id;
@@ -97,7 +98,7 @@ namespace LibraryCardAPI.Service
                 _repository.Update(result);
                 if (await _repository.SaveChangesAsync())
                 {
-                    return await _repository.FindByIdAsync(student.Id);
+                    return _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id));
                 }
 
                 return null;
@@ -126,15 +127,16 @@ namespace LibraryCardAPI.Service
             }
         }
 
-        public async Task<Student> RenewValidateStudent(int id, Student student)
+        public async Task<StudentDTO> RenewValidateStudent(int id, StudentDTO studentDTO)
         {
             try
             {
+                var student = _mapper.Map<Student>(studentDTO);
                 var renewValidade = new Student() { Id = id, Validate = student.Validate };
                 _repository.RenewValidateStudent(renewValidade);
                 if (await _repository.SaveChangesAsync())
                 {
-                    return await _repository.FindByIdAsync(student.Id);
+                    return _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id));
                 }
 
                 return null;

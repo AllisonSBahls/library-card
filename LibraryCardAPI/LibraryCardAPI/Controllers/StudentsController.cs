@@ -1,4 +1,5 @@
-﻿using LibraryCardAPI.Models;
+﻿using LibraryCardAPI.DTO;
+using LibraryCardAPI.Models;
 using LibraryCardAPI.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,10 @@ namespace LibraryCardAPI.Controllers
             try
             {
                 var result = await _service.FindWithPagedSearchName(name, sortDirection, pageSize, page);
+                if (result == null) return NotFound("No students found");
                 return Ok(result);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in search the students: {ex.Message} ");
             }
@@ -50,7 +53,7 @@ namespace LibraryCardAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Student student)
+        public async Task<IActionResult> Post(StudentDTO student)
         {
             try
             {
@@ -66,7 +69,7 @@ namespace LibraryCardAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Student student)
+        public async Task<IActionResult> Put(int id, StudentDTO student)
         {
             try
             {

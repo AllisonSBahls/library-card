@@ -28,12 +28,12 @@ namespace LibraryCardAPI.Service
             _mapper = mapper;
         }
 
-        public async Task ChangeUserPassword(UserDTO userDTO, string newPassword)
+        public async Task ChangeUserPassword(UserDTO userDTO, string currentPassword, string newPassword)
         {
             try
             {
                 var user = _mapper.Map<User>(userDTO);
-                IdentityResult result = await _userManager.ChangePasswordAsync(user, user.PasswordHash, newPassword);
+                IdentityResult result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
              
             }
             catch (Exception ex)

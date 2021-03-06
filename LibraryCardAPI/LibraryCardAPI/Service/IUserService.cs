@@ -12,7 +12,7 @@ namespace LibraryCardAPI.Service
         Task<UserDTO> FindByIdAsync(int id);
         Task<UserDTO> UpdateUserAsync(int id, UserDTO userDTO);
         Task<UserDTO> CreateUserAsync(UserDTO userDTO);
-        Task ChangeUserPassword(UserDTO userDTO, string newPassword);
+        Task ChangeUserPassword(UserDTO userDTO, string currentPassword, string newPassword);
         Task<bool> DeleteUserAsync(int id);
         Task<PageList<UserDTO>> FindWithUserFullNamePageSearch(string name, string sortDirection, int pageSize, int page);
     }
