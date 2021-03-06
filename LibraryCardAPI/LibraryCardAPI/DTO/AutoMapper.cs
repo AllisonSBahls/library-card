@@ -13,7 +13,7 @@ namespace LibraryCardAPI.DTO
         {
             CreateMap<Student, StudentDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
-            CreateMap<LoginDTO, UserDTO>().ReverseMap();
+            CreateMap<User, LoginDTO>().ReverseMap();
         }
     }
 }

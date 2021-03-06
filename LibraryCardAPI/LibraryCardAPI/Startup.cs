@@ -13,6 +13,11 @@ using LibraryCardAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using System;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace LibraryCardAPI
 {
@@ -29,6 +34,7 @@ namespace LibraryCardAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //Identity Core
             IdentityBuilder builder = services.AddIdentityCore<User>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -37,11 +43,12 @@ namespace LibraryCardAPI
                 options.Password.RequireUppercase = false;
             });
 
-
+            // Identity Builder
             builder = new IdentityBuilder(builder.UserType, builder.Services);
             builder.AddEntityFrameworkStores<LibraryCardContext>();
             builder.AddSignInManager<SignInManager<User>>();
 
+            // Bearer Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt =>
                 {
@@ -55,11 +62,19 @@ namespace LibraryCardAPI
                     };
                 });
 
+            // Authetication default for controllers
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
             services.AddControllers();
 
-
+            // Allow requests
             services.AddCors(options => options.AddDefaultPolicy(builder =>
             {
                 builder.AllowAnyOrigin()
@@ -68,8 +83,10 @@ namespace LibraryCardAPI
             })
             );
 
+            //Auto Mapper
             services.AddAutoMapper(typeof(Startup));
 
+            //Injection Independency
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILoginService, LoginService>();
@@ -77,6 +94,25 @@ namespace LibraryCardAPI
             services.AddScoped(typeof(IRepository), typeof(GenericRepository));
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
+
+            //Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Library Card API",
+                        Version = "v1",
+                        Description = "Library Card API for generation students cards",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Allison Sousa Bahls",
+                            Url = new Uri("https://github.com/AllisonSBahls")
+                        }
+                    });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +126,19 @@ namespace LibraryCardAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Swagger Json documentation
+            app.UseSwagger();
+
+            // Generate Page Swagger HTML
+            app.UseSwaggerUI(c=> {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Card API - v1");
+                });
+
+            //Swagger Page redirect
+            var option = new RewriteOptions();
+            option.AddRedirect("^&", "swagger");
+            app.UseRewriter(option);
 
             app.UseAuthentication();
             app.UseAuthorization();

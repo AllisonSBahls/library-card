@@ -45,7 +45,7 @@ namespace LibraryCardAPI.Service
 
                 if (string.IsNullOrEmpty(name))
                 {
-                    name = " ";
+                    name = "";
                 }
 
                 var students = await _repository.FindWithPagedSearchName(name, size, offset);
