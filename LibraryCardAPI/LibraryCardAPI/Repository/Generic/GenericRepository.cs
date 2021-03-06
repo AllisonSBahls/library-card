@@ -28,9 +28,9 @@ namespace LibraryCardAPI.Repository.Generic
         {
             _context.RemoveRange(entity);
         }
-        public void Update<T>(T entity) where T : class
+        public void Update<T>(T item, T entity) where T : class
         {
-            _context.Update(entity);
+            _context.Entry(item).CurrentValues.SetValues(entity);
         }
 
         public async Task<bool> SaveChangesAsync()

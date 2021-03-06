@@ -28,12 +28,14 @@ namespace LibraryCardAPI.Service
             _mapper = mapper;
         }
 
-        public async Task ChangeUserPassword(UserDTO userDTO, string currentPassword, string newPassword)
+        public async Task ChangeUserPassword(int id, ChangePassword changePassword)
         {
             try
             {
-                var user = _mapper.Map<User>(userDTO);
-                IdentityResult result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+                var findUser = await _repository.FindByIdAsync(id);
+                Console.WriteLine(id +"Senha atual " + changePassword.CurrentPassword + "Nova senha: " + changePassword.NewPassword);
+                IdentityResult result = await _userManager.ChangePasswordAsync(findUser, changePassword.CurrentPassword, changePassword.NewPassword);
              
             }
             catch (Exception ex)
@@ -49,7 +51,6 @@ namespace LibraryCardAPI.Service
             {
                 var user = _mapper.Map<User>(userDTO);
                 var result = await _userManager.CreateAsync(user, userDTO.Password);
-
                 var userToReturn = _mapper.Map<UserDTO>(user);
                 if (result.Succeeded) return userToReturn;
             
@@ -119,10 +120,10 @@ namespace LibraryCardAPI.Service
                 if (result == null) throw new Exception("User for update not found");
 
                 user.Id = result.Id;
-
-                _repository.Update(result);
+                _repository.Update(result, user);
                 if (await _repository.SaveChangesAsync())
                 {
+                    Console.WriteLine(_repository.SaveChangesAsync());
                     return _mapper.Map<UserDTO>( await _repository.FindByIdAsync(user.Id));
                 }
                 return null;

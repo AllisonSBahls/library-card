@@ -1,4 +1,5 @@
 ﻿using LibraryCardAPI.DTO;
+using LibraryCardAPI.Models;
 using LibraryCardAPI.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -62,17 +63,17 @@ namespace LibraryCardAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in search the user: {ex.Message}");
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> ChangePassowrd(UserDTO userDTO, [FromBody] string currentPassord, [FromBody] string newPassword)
+        [HttpPut("password/{id}")]
+        public async Task<IActionResult> ChangePassword(ChangePassword changePassword, int id)
         {
             try
             {
-               await _service.ChangeUserPassword(userDTO, currentPassord, newPassword);
+               await _service.ChangeUserPassword(id, changePassword);
                return this.StatusCode(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in search the user: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in change password of user: {ex.Message}");
             }
         }
 

@@ -95,7 +95,7 @@ namespace LibraryCardAPI.Service
 
                 student.Id = result.Id;
 
-                _repository.Update(result);
+                _repository.Update(result, student);
                 if (await _repository.SaveChangesAsync())
                 {
                     return _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id));

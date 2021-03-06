@@ -71,8 +71,11 @@ namespace LibraryCardAPI
             services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILoginService, LoginService>();
 
             services.AddScoped(typeof(IRepository), typeof(GenericRepository));
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
         }
 
