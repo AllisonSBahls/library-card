@@ -1,6 +1,7 @@
 ﻿using LibraryCardAPI.DTO;
 using LibraryCardAPI.Models;
 using LibraryCardAPI.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ namespace LibraryCardAPI.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;

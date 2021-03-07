@@ -12,7 +12,7 @@ namespace LibraryCardAPI.DTO
         public string  Course { get; set; }
         public int RegistrationNumber { get; set; }
         public string Photo { get; set; }
-        public string Validate { get; set; }
+        public DateTime Validate { get; set; }
 
     }
 }

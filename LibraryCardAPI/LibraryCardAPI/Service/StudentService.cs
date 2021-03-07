@@ -127,19 +127,14 @@ namespace LibraryCardAPI.Service
             }
         }
 
-        public async Task<StudentDTO> RenewValidateStudent(int id, StudentDTO studentDTO)
+        public async Task RenewValidateStudent(int id, StudentDTO studentDTO)
         {
             try
             {
-                var student = _mapper.Map<Student>(studentDTO);
-                var renewValidade = new Student() { Id = id, Validate = student.Validate };
+                var renewValidade = new Student() { Id = id, Validate = studentDTO.Validate };
                 _repository.RenewValidateStudent(renewValidade);
-                if (await _repository.SaveChangesAsync())
-                {
-                    return _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id));
-                }
-
-                return null;
+                await _repository.SaveChangesAsync();
+              
             }
             catch(Exception ex)
             {

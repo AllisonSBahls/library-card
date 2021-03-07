@@ -44,8 +44,10 @@ namespace LibraryCardAPI
             });
 
             // Identity Builder
-            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole<int>), builder.Services);
             builder.AddEntityFrameworkStores<LibraryCardContext>();
+            builder.AddRoleValidator<RoleValidator<IdentityRole<int>>>();
+            builder.AddRoleManager<RoleManager< IdentityRole<int>>> ();
             builder.AddSignInManager<SignInManager<User>>();
 
             // Bearer Authentication
@@ -62,14 +64,7 @@ namespace LibraryCardAPI
                     };
                 });
 
-            // Authetication default for controllers
-            services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
+
 
             services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
             services.AddControllers();

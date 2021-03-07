@@ -1,6 +1,7 @@
 ﻿using LibraryCardAPI.DTO;
 using LibraryCardAPI.Models;
 using LibraryCardAPI.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,7 @@ namespace LibraryCardAPI.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _service;
@@ -84,6 +86,19 @@ namespace LibraryCardAPI.Controllers
             }
         }
         
+        [HttpPatch("renew/{id}")]
+        public async Task<IActionResult> RenewCard(int id, StudentDTO studentDTO)
+        {
+            try{
+                await _service.RenewValidateStudent(id, studentDTO);
+                return this.StatusCode(StatusCodes.Status202Accepted);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in renew card student: {ex.Message}");
+            }
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

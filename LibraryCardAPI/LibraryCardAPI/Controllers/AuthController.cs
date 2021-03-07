@@ -36,7 +36,6 @@ namespace LibraryCardAPI.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Get([FromHeader] string token)
         {
             try
