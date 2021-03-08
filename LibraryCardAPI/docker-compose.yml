@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  db:
+    image: librarycard-db
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: librarycard-password
+      MYSQL_DATABASE: librarycards
+    ports:
+      - 3309:3306
+    restart: always
+    build: 
+      context: .
+      dockerfile: LibraryCardAPI/Data/Dockerfile
+    networks:
+      - librarycards-network
+  librarycardapi:
+    image: librarycardapi
+    build:
+      context: .
+      dockerfile: LibraryCardAPI/Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 44300:80
+    networks:
+      - librarycards-network
+      
+networks:
+  librarycards-network:
+    driver: bridge

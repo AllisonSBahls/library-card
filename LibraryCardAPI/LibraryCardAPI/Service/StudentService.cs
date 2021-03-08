@@ -14,6 +14,10 @@ namespace LibraryCardAPI.Service
         private readonly IStudentRepository _repository;
         private readonly IMapper _mapper;
 
+        public StudentService()
+        {
+
+        }
         public StudentService(IStudentRepository repository, IMapper mapper)
         {
             _repository = repository;

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LibraryCardAPI.Migrations
+namespace LibraryCardAPI.Data.Migrations
 {
     [DbContext(typeof(LibraryCardContext))]
     partial class LibraryCardContextModelSnapshot : ModelSnapshot
