@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LibraryCardAPI.Migrations
+namespace LibraryCardAPI.Data.Migrations
 {
     [DbContext(typeof(LibraryCardContext))]
-    [Migration("20210306033911_initial")]
-    partial class initial
+    [Migration("20210308003809_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

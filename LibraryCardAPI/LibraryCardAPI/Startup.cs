@@ -18,6 +18,7 @@ using System;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace LibraryCardAPI
 {
@@ -66,7 +67,15 @@ namespace LibraryCardAPI
 
 
 
-            services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
+            services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection"),
+                mySqlOptions =>
+                {
+                    mySqlOptions.ServerVersion(new Version(5, 7, 22), ServerType.MySql)
+                    .EnableRetryOnFailure(
+                    maxRetryCount: 10,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+                }));
             services.AddControllers();
 
             // Allow requests
