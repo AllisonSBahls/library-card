@@ -72,7 +72,7 @@ namespace LibraryCardAPI.Controllers
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
-                        file.CopyTo(stream);
+                        await file.CopyToAsync(stream);
                     }
                 }
 
