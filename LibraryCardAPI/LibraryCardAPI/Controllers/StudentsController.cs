@@ -75,6 +75,8 @@ namespace LibraryCardAPI.Controllers
                         file.CopyTo(stream);
                     }
                 }
+
+                return Ok();
             }
             catch (Exception ex)
             {
