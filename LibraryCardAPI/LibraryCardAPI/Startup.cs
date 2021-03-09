@@ -68,7 +68,23 @@ namespace LibraryCardAPI
                     };
                 });
 
+            services.AddMvc(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
 
+            // Allow requests
+
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            })
+            );
 
             services.AddDbContext<LibraryCardContext>(options => options.UseMySql(Configuration.GetConnectionString("MySQLConnection"),
                 mySqlOptions =>
@@ -81,14 +97,7 @@ namespace LibraryCardAPI
                 }));
             services.AddControllers();
 
-            // Allow requests
-            services.AddCors(options => options.AddDefaultPolicy(builder =>
-            {
-                builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-            })
-            );
+         
 
             //Auto Mapper
             services.AddAutoMapper(typeof(Startup));
@@ -133,6 +142,7 @@ namespace LibraryCardAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors();
 
             //Static files
             app.UseStaticFiles(new StaticFileOptions()
@@ -143,6 +153,8 @@ namespace LibraryCardAPI
 
             // Swagger Json documentation
             app.UseSwagger();
+
+            //Allow request front end
 
             // Generate Page Swagger HTML
             app.UseSwaggerUI(c=> {
