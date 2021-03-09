@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryCardAPI
 {
@@ -130,6 +133,13 @@ namespace LibraryCardAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //Static files
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             // Swagger Json documentation
             app.UseSwagger();
