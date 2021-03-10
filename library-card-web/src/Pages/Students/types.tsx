@@ -1,8 +1,8 @@
 export interface IStudents {
     id: number;
-    Name: string;
-    Course: String;
-    RegistrationNumber: number
-    Photo: string;
-    Validate: Date;
+    name: string;
+    course: string;
+    registrationNumber: number
+    photo: string;
+    validate: Date;
 }

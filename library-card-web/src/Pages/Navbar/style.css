@@ -1,12 +1,15 @@
 nav{
     background: #00a859;
-    width: 100vw;
+    width: 100%;
     height:80px;
     color: var(--ligh-color);
     align-items: center;
+    border: 1px solid rgb(190, 190, 190);
+    box-shadow: 3px 2px 1px rgb(202, 202, 202);
 }
 
 .navbar-title{
+    color: white;
     float: left;
     font-size: 25px;
     white-space: nowrap;
