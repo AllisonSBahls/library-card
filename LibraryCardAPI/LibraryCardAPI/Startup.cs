@@ -102,6 +102,8 @@ namespace LibraryCardAPI
             //Auto Mapper
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddScoped<SeedingData>();
+
             //Injection Independency
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IUserService, UserService>();
@@ -132,11 +134,12 @@ namespace LibraryCardAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingData seed)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                seed.SeedUsers();
             }
 
             app.UseHttpsRedirection();
@@ -144,6 +147,7 @@ namespace LibraryCardAPI
             app.UseRouting();
             app.UseCors();
 
+            app.UseStaticFiles();
             //Static files
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -158,8 +162,10 @@ namespace LibraryCardAPI
 
             // Generate Page Swagger HTML
             app.UseSwaggerUI(c=> {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Card API - v1");
-                });
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "Library Card API - v1");
+                c.RoutePrefix = string.Empty;
+
+            });
 
             //Swagger Page redirect
             var option = new RewriteOptions();
