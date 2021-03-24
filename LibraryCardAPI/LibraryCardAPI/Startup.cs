@@ -147,9 +147,8 @@ namespace LibraryCardAPI
             app.UseRouting();
             app.UseCors();
 
-            app.UseStaticFiles();
             //Static files
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
                 RequestPath = new PathString("/Resources")

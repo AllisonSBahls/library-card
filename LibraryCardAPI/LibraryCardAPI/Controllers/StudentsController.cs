@@ -2,6 +2,7 @@
 using LibraryCardAPI.Models;
 using LibraryCardAPI.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,14 +16,16 @@ namespace LibraryCardAPI.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _service;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public StudentsController(IStudentService service)
+        public StudentsController(IStudentService service, IWebHostEnvironment hostEnvironment)
         {
             _service = service;
+            _hostEnvironment = hostEnvironment;
         }
 
 
@@ -56,42 +59,16 @@ namespace LibraryCardAPI.Controllers
             }
         }
 
-        [HttpGet("upload/photo")]
-        public async Task<IActionResult> UploadPhoto()
-        {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                
-                if(file.Length > 0)
-                {
-                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-                    var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim());
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                }
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in upload photo the students: {ex.Message} ");
-            }
-        }
-
         [HttpPost]
         public async Task<IActionResult> Post(StudentDTO student)
         {
+
             try
             {
+                Console.Write(student.Photo);
+                //student.Photo = await SaveImage(student.ImageFile);
                 var result = await _service.CreateStudentsAsync(student);
                 if (result == null) return BadRequest("Error in create the student");
-
                 return Ok(result);
             }
             catch (Exception ex)
@@ -105,7 +82,13 @@ namespace LibraryCardAPI.Controllers
         {
             try
             {
+                if(student.ImageFile != null)
+                {
+                    DeleteImage(student.Photo);
+                    student.Photo = await SaveImage(student.ImageFile);
+                }
                 var result = await _service.UpdateStudentsAsync(id, student);
+
                 if (result == null) return BadRequest("Error in update the student");
 
                 return Ok(result);
@@ -134,14 +117,42 @@ namespace LibraryCardAPI.Controllers
         {
             try
             {
+                var student = await _service.FindByIdAsync(id);
+                if(student == null)
+                {
+                    return NotFound("Student not find");
+                }
+
+                DeleteImage(student.Photo);
                 return await _service.DeleteStudentsAsync(id) ? 
                     Ok("Deleted") : 
                     BadRequest("Student not delete");
-;
+
             }catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in delete the student: {ex.Message}");
             }
+        }
+
+        [NonAction]
+        public async Task<string> SaveImage(FormFile imageFile)
+        {
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Resources", imageName);
+            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+            return imageName;
+        }
+
+        [NonAction]
+        public void DeleteImage(string imageName)
+        {
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Resources/Images", imageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
         }
     }
 }

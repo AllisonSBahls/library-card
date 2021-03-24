@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace LibraryCardAPI.DTO
 {
@@ -12,6 +10,7 @@ namespace LibraryCardAPI.DTO
         public string  Course { get; set; }
         public int RegistrationNumber { get; set; }
         public string Photo { get; set; }
+        public FormFile ImageFile { get; set; }
         public DateTime Validate { get; set; }
 
     }

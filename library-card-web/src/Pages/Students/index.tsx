@@ -5,6 +5,7 @@ import { fetchStudents } from "../../Services/Students";
 import { toast } from "react-toastify";
 import StudentList from "./StudentList";
 import Navbar from "../Navbar";
+import StudentForm from "./StudentForm";
 
 export default function Students() {
   const [students, setStudents] = useState<IStudents[]>([]);
@@ -19,7 +20,7 @@ export default function Students() {
 
   const authorization = {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOlsiMSIsImFsbGlzb24iXSwibmJmIjoxNjE1MzEwMTA3LCJleHAiOjE2MTUzOTY1MDcsImlhdCI6MTYxNTMxMDEwN30.0zACzbY4J-6BFNjHh3XrGGz24EwXYICy8FixNV-wRRpxRtG9qq1Z3knsnyUGbnBKPiKojQUi_TNwdzjzM8mwwQ`,
+      Authorization: `Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOlsiMSIsImluZm9ybWF0aWNhIl0sIm5iZiI6MTYxNjExNjQwOCwiZXhwIjoxNjE2MjAyODA4LCJpYXQiOjE2MTYxMTY0MDh9.DIfbjDxUSse7ZNDPlAO2X9WF6bdEPNgrE-gLQY1VuHpeQ1IOPYIO8-IiANrVttYZeDQ-HEi3ObH3lLzk_NC3Rw`,
     },
   };
 
@@ -43,19 +44,31 @@ export default function Students() {
     <>
       <Navbar />
       <div className="students-container">
-        <div>
+        {/* <div>
           <div className="students-header">
             <h3>Bem vindo ao Library Card Allison</h3>
             <div className="students-header-button">
-                <button className="students-button-newcard">Gerar Carteirinha</button>
-                <button className="students-button-renewcard">Renovar Carteirinhas</button>
-                <button className="students-button-expirate">Próximas a Vencer</button>
+              <button className="students-button-newcard">
+                Gerar Carteirinha
+              </button>
+              <button className="students-button-renewcard">
+                Renovar Carteirinhas
+              </button>
+              <button className="students-button-expirate">
+                Próximas a Vencer
+              </button>
             </div>
           </div>
-        </div>
-        
+        </div> */}
+
         <div className="students">
-          <StudentList Students={students} />
+        <div className="students-form">
+            <StudentForm />
+          </div>
+          <div className="students-list-cards">
+            <StudentList Students={students} />
+          </div>
+        
         </div>
       </div>
     </>

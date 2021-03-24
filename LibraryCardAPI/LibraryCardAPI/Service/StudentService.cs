@@ -77,10 +77,12 @@ namespace LibraryCardAPI.Service
         {
             try
             {
-                var student = _mapper.Map<Student>(studentDTO);
+                Student student = _mapper.Map<Student>(studentDTO);
                 _repository.Add(student);
+
                 return await _repository.SaveChangesAsync() ?
-                        _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id)) :
+                       _mapper.Map<StudentDTO>(await _repository.FindByIdAsync(student.Id))
+                       :
                        null;
             }
             catch (Exception ex)
@@ -145,5 +147,7 @@ namespace LibraryCardAPI.Service
                 throw new Exception(ex.Message);
             }
         }
+
+
     }
 }

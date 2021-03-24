@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import Navbar from "../Navbar"
 import Students from "../Students"
 import "./style.css"
@@ -13,7 +14,7 @@ export default function Home(){
                 <a href="#/">Meu perfil</a>
             </div>
             <div className="home-button">
-            <button className="home-button-new">Nova Carteira</button>
+            <Link to="" className="home-button-new">Nova Carteira</Link>
             <button className="home-button-renew">Renovar Carteira</button>
             </div>
             </div>

@@ -4,5 +4,6 @@ export interface IStudents {
     course: string;
     registrationNumber: number
     photo: string;
-    validate: Date;
+    expiration: Date;
+    imageFile: null;
 }
