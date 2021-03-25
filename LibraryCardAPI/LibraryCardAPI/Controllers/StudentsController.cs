@@ -20,12 +20,12 @@ namespace LibraryCardAPI.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _service;
-        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IWebHostEnvironment _environment;
 
-        public StudentsController(IStudentService service, IWebHostEnvironment hostEnvironment)
+        public StudentsController(IStudentService service, IWebHostEnvironment environment)
         {
             _service = service;
-            _hostEnvironment = hostEnvironment;
+            _environment = environment;
         }
 
 
@@ -60,16 +60,15 @@ namespace LibraryCardAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(StudentDTO student)
+        public async Task<IActionResult> Post([FromForm]StudentDTO student)
         {
 
             try
             {
-                Console.Write(student.Photo);
-                //student.Photo = await SaveImage(student.ImageFile);
+                student.Photo = await SaveImage(student.ImageFile);
                 var result = await _service.CreateStudentsAsync(student);
                 if (result == null) return BadRequest("Error in create the student");
-                return Ok(result);
+                return Ok(StatusCodes.Status201Created);
             }
             catch (Exception ex)
             {
@@ -82,10 +81,10 @@ namespace LibraryCardAPI.Controllers
         {
             try
             {
-                if(student.ImageFile != null)
+                if (student.ImageFile != null)
                 {
                     DeleteImage(student.Photo);
-                    student.Photo = await SaveImage(student.ImageFile);
+                   // student.Photo = await SaveImage(student.ImageFile);
                 }
                 var result = await _service.UpdateStudentsAsync(id, student);
 
@@ -98,11 +97,11 @@ namespace LibraryCardAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in update the students: {ex.Message} ");
             }
         }
-        
+
         [HttpPatch("renew/{id}")]
         public async Task<IActionResult> RenewCard(int id, StudentDTO studentDTO)
         {
-            try{
+            try {
                 await _service.RenewValidateStudent(id, studentDTO);
                 return this.StatusCode(StatusCodes.Status202Accepted);
             }
@@ -118,39 +117,39 @@ namespace LibraryCardAPI.Controllers
             try
             {
                 var student = await _service.FindByIdAsync(id);
-                if(student == null)
+                if (student == null)
                 {
                     return NotFound("Student not find");
                 }
 
                 DeleteImage(student.Photo);
-                return await _service.DeleteStudentsAsync(id) ? 
-                    Ok("Deleted") : 
+                return await _service.DeleteStudentsAsync(id) ?
+                    Ok("Deleted") :
                     BadRequest("Student not delete");
 
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in delete the student: {ex.Message}");
             }
         }
 
-        [NonAction]
-        public async Task<string> SaveImage(FormFile imageFile)
-        {
-            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
-            imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Resources", imageName);
-            using (var fileStream = new FileStream(imagePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(fileStream);
-            }
-            return imageName;
-        }
+       [NonAction]
+       public async Task<string> SaveImage([FromForm]IFormFile imageFile)
+       {
+           string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
+           imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(imageFile.FileName);
+           var imagePath = Path.Combine(_environment.ContentRootPath, "Resources/images", imageName);
+           using (var fileStream = new FileStream(imagePath, FileMode.Create))
+           {
+               await imageFile.CopyToAsync(fileStream);
+           }
+           return imageName;
+       }
 
         [NonAction]
         public void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, "Resources/Images", imageName);
+            var imagePath = Path.Combine(_environment.ContentRootPath, "Resources/Images", imageName);
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
         }

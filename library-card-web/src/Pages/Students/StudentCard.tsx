@@ -5,7 +5,7 @@ type props = {
 }
 
 export default function StudentCard({cardStudent} : props){
-    var date =  new Date(cardStudent.expiration);
+    var date =  new Date(cardStudent.validate);
     return (
     <>
         <div className="students-content">

@@ -1,8 +1,8 @@
 import { read } from "fs";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { createStudent } from "../../Services/Students";
-import {IStudents} from './types';
+import { createStudent, uploadPhoto } from "../../Services/Students";
+import {IStudents, IPhoto} from './types';
 
 
 
@@ -28,28 +28,6 @@ export default function StudentForm() {
     },
   };
 
-  async function insertStudent(e: React.FormEvent){
-    e.preventDefault();
-    try{
-    var date = new Date(Date.now());
-    var register = Number(registrationNumber)
-    const data: IStudents = {
-      id: 0,
-      name,
-      course,
-      expiration: date,
-      registrationNumber:register,
-      photo: image.imagePhoto,
-      imageFile: image.imageFile
-    }
-
-    await createStudent(data, authorization);
-    toast.success("Estudante cadastrado");
-  }catch(err){
-    toast.error("Erro ao inserir o estudante");
-  }
-  }
-
   const showPreview = (e: any) => {
     if (e.target.files && e.target.files[0]){
       let imageFile = e.target.files[0];
@@ -61,7 +39,7 @@ export default function StudentForm() {
         });
       }
       reader.readAsDataURL(imageFile); 
-      console.log(image)
+
     }
     else{
       setImage({
@@ -70,6 +48,44 @@ export default function StudentForm() {
       });
     }
   }
+
+  async function insertStudent(e: React.FormEvent){
+    e.preventDefault();
+    try{
+    var date = new Date(Date.now());
+    var register = Number(registrationNumber)
+    const formData = new FormData();
+    formData.append('name', name)
+    formData.append('course', course)
+    formData.append('validate', expiration)
+    formData.append('registrationNumber', registrationNumber)
+    formData.append('photo', image.imagePhoto)
+    formData.append('imageFile', image.imageFile || 'a')
+    
+    await createStudent(formData, authorization)
+    // const data: IStudents = {
+    //   id: 0,
+    //   name,
+    //   course,
+    //   validate: date,
+    //   registrationNumber:register,
+    //   photo: image.imagePhoto,
+    //   imageFile: image.imageFile
+    // }
+
+    // const data: IPhoto = {
+    //   photo: image.imagePhoto,
+    //   imageFile: image.imageFile
+    // }
+
+    //  await uploadPhoto(data.imageFile);
+    toast.success("Estudante cadastrado");
+  }catch(err){
+    toast.error("Erro ao inserir o estudante");
+  }
+  }
+
+  
 
 
   return (
