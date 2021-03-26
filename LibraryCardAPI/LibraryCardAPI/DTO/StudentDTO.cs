@@ -12,6 +12,7 @@ namespace LibraryCardAPI.DTO
         public string Photo { get; set; }
         public IFormFile ImageFile { get; set; }
         public DateTime Validate { get; set; }
+        public bool GeneratedCard { get; set; }
 
     }
 }

@@ -3,14 +3,16 @@ using System;
 using LibraryCardAPI.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LibraryCardAPI.Data.Migrations
+namespace LibraryCardAPI.Data
 {
     [DbContext(typeof(LibraryCardContext))]
-    partial class LibraryCardContextModelSnapshot : ModelSnapshot
+    [Migration("20210326205439_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +27,9 @@ namespace LibraryCardAPI.Data.Migrations
 
                     b.Property<string>("Course")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("GeneratedCard")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

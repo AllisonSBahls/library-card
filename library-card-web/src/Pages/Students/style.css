@@ -39,24 +39,30 @@
     display: flex;
     margin: auto;
     width: 95%;
-    padding-top: 40px;
+    background-color: #ece9e9;
+    border-radius: 10px;
 
 }
 
 .students-form{
     width: 40%;
-    display: flex;
-    align-items: center;
     border-right: 1px solid rgb(201, 201, 201);
     margin-right: 10px;
+    padding-top: 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+}
+
+.students-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
 }
 
 .students-list-cards{
     width: 70%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
 }
 
 .students-content{
@@ -142,37 +148,80 @@
 }
 
 .form-create{
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .form-create input{
     display: block;
     margin-bottom: 10px;
-    width: 130%;
-    height: 25px;
+    width: 80%;
+    height: 30px;
+    padding-left: 10px;
     border: 1px solid rgb(172, 173, 172);
-    border-radius: 5px;
 }
 
 .form-create label {
-    color: rgb(0, 0, 0);
+    color: rgb(1, 44, 15);
     font-stretch: 10px;
 }
 
 
 .field-photo input{
     border: none;
-    color: white;
+    color: rgb(5, 58, 32);
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+
 }
 
 
 .field-photo-image{
-    background-color: rgb(235, 235, 235);
-    margin-left: 50%;
-    width: 140px;
-    height: 130px;
-    border-radius: 3%;
+    background-color: rgb(255, 255, 255);
+    margin-left: 30%;
+    width: 170px;
+    height:145px;
     margin-bottom: 10px;
-    border: 1px solid black;
+    border-radius: 10px;
+}
 
+.field-infos{
+    display: flex;
+    width: 100%;
+}
+
+.field-code{
+    width: 40%;
+}
+
+.field-expirate{
+    width: 49%;
+}
+
+
+.photo{
+    width: 170px;
+    height: 145px;
+    border-radius: 10px;
+}
+
+.button-save-continue{
+    margin-top: 15px;
+    width: 40%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #00a859;
+    font-weight: bold;
+}
+
+.students-form-title{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #00a859;
+    font-weight: 900;
 }

@@ -13,5 +13,7 @@ namespace LibraryCardAPI.Models
         public int RegistrationNumber { get; set; }
         public string Photo { get; set; }
         public DateTime Validate { get; set; }
+
+        public bool GeneratedCard { get; set; }
     }
 }

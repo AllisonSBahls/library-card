@@ -22,12 +22,24 @@ namespace LibraryCardAPI.Repository
 
         }
 
-        public async Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset)
+        public async Task<List<Student>> FindWithPagedSearchName(string name, int size, int offset, bool generated)
         {
-            var result = _context.Students.Where(s => s.Name.Contains(name)).OrderBy(x => x.Name).Skip(offset).Take(size);
+
+            var result = _context.Students
+                .Where(s => s.Name.Contains(name) && 
+                            s.GeneratedCard.Equals(generated))
+                .OrderBy(x => x.Name)
+                .Skip(offset)
+                .Take(size);
            
             return await result.ToListAsync();
 
+        }
+
+        public void GeneratedCard(Student student)
+        {
+            _context.Students.Attach(student);
+            var result = _context.Entry(student).Property(x => x.GeneratedCard).IsModified = true;
         }
 
         public int GetCount(string name)

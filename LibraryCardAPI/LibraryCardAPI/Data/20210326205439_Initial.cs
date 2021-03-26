@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LibraryCardAPI.Data.Migrations
+namespace LibraryCardAPI.Data
 {
     public partial class Initial : Migration
     {
@@ -60,7 +60,8 @@ namespace LibraryCardAPI.Data.Migrations
                     Course = table.Column<string>(nullable: true),
                     RegistrationNumber = table.Column<int>(nullable: false),
                     Photo = table.Column<string>(nullable: true),
-                    Validate = table.Column<DateTime>(nullable: false)
+                    Validate = table.Column<DateTime>(nullable: false),
+                    GeneratedCard = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

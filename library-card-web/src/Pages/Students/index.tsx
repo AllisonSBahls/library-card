@@ -44,28 +44,16 @@ export default function Students() {
     <>
       <Navbar />
       <div className="students-container">
-        {/* <div>
-          <div className="students-header">
-            <h3>Bem vindo ao Library Card Allison</h3>
-            <div className="students-header-button">
-              <button className="students-button-newcard">
-                Gerar Carteirinha
-              </button>
-              <button className="students-button-renewcard">
-                Renovar Carteirinhas
-              </button>
-              <button className="students-button-expirate">
-                Próximas a Vencer
-              </button>
-            </div>
-          </div>
-        </div> */}
 
         <div className="students">
         <div className="students-form">
+          <h3 className="students-form-title">Criar Carteirinha da Biblioteca</h3>
             <StudentForm />
           </div>
+
+
           <div className="students-list-cards">
+            <h2>Carteirinhas</h2>
             <StudentList Students={students} />
           </div>
         

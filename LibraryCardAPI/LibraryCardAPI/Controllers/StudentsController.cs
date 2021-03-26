@@ -30,11 +30,11 @@ namespace LibraryCardAPI.Controllers
 
 
         [HttpGet("{sortDirection}/{pageSize}/{page}")]
-        public async Task<IActionResult> Get([FromQuery] string name, string sortDirection, int pageSize, int page)
+        public async Task<IActionResult> Get([FromQuery] string name, [FromQuery]bool generate, string sortDirection, int pageSize, int page)
         {
             try
             {
-                var result = await _service.FindWithPagedSearchName(name, sortDirection, pageSize, page);
+                var result = await _service.FindWithPagedSearchName(name, sortDirection, pageSize, page, generate);
                 if (result == null) return NotFound("No students found");
                 return Ok(result);
             }
@@ -84,7 +84,7 @@ namespace LibraryCardAPI.Controllers
                 if (student.ImageFile != null)
                 {
                     DeleteImage(student.Photo);
-                   // student.Photo = await SaveImage(student.ImageFile);
+                    student.Photo = await SaveImage(student.ImageFile);
                 }
                 var result = await _service.UpdateStudentsAsync(id, student);
 
@@ -108,6 +108,20 @@ namespace LibraryCardAPI.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in renew card student: {ex.Message}");
+            }
+        }
+
+        [HttpPatch("generate/{id}")]
+        public async Task<IActionResult> GeneratedCard(int id)
+        {
+            try
+            {
+                await _service.GeneratedCard(id);
+                return this.StatusCode(StatusCodes.Status202Accepted);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Error in generate card student: {ex.Message}");
             }
         }
 

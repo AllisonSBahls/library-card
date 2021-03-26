@@ -5,12 +5,8 @@ const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
 });
 
-export function createStudent(student: any, token: AxiosRequestConfig){
+export function createStudent(student: FormData, token: AxiosRequestConfig){
     return api.post('api/v1/students', student, token);
-}
-
-export function uploadPhoto(photo: any){
-    return api.post('api/v1/students/upload', photo);
 }
 
 export function fetchStudents(page: number, token: AxiosRequestConfig, name: string){

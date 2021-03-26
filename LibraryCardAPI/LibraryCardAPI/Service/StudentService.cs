@@ -39,7 +39,7 @@ namespace LibraryCardAPI.Service
         }
 
 
-        public async Task<PageList<StudentDTO>> FindWithPagedSearchName(string name, string sortDirection, int pageSize, int page)
+        public async Task<PageList<StudentDTO>> FindWithPagedSearchName(string name, string sortDirection, int pageSize, int page, bool generate)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace LibraryCardAPI.Service
                     name = "";
                 }
 
-                var students = await _repository.FindWithPagedSearchName(name, size, offset);
+                var students = await _repository.FindWithPagedSearchName(name, size, offset, generated);
 
                 var totalResult = _repository.GetCount(name);
 
@@ -148,6 +148,19 @@ namespace LibraryCardAPI.Service
             }
         }
 
+        public async Task GeneratedCard(int id)
+        {
+            try
+            {
+                var generad = new Student() { Id = id, GeneratedCard = true };
+                _repository.GeneratedCard(generad);
+                await _repository.SaveChangesAsync();
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
