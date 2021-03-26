@@ -2,15 +2,16 @@ import StudentCard from "./StudentCard"
 import { IStudents } from "./types"
 
 type props = {
-    Students: IStudents[];
+    StudentsGenerated: IStudents[];
+    StudentsNotGenerated: IStudents[];
 }
 
-export default function StudentList({Students}: props){
+export default function StudentList({StudentsGenerated: Students, StudentsNotGenerated: NotGenerated}: props){
     return (
         <>
         <h3 className="students-list-title">Carteirinhas para Gerar</h3>
          <div className="students-list">
-            {Students.map((student) => 
+            {NotGenerated.map((student) => 
                 <StudentCard
                     key={student.id}   
                     cardStudent = {student}

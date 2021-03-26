@@ -8,7 +8,8 @@ import Navbar from "../Navbar";
 import StudentForm from "./StudentForm";
 
 export default function Students() {
-  const [students, setStudents] = useState<IStudents[]>([]);
+  const [studentsGenerated, setStudents] = useState<IStudents[]>([]);
+  const [studentsNotGenerated, setStudentsNotGenerated] = useState<IStudents[]>([]);
   const [totalResult, setTotalResult] = useState<number>(0);
   const [nameStudent, setNameStudent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<Boolean>(false);
@@ -25,14 +26,27 @@ export default function Students() {
   };
 
   useEffect(() => {
-    fetchAllStudents();
+    fetchStudentsGenerated();
+    fetchStudentsNeedToGenerated();
   }, [token, nameStudent, refresh]);
 
-  async function fetchAllStudents() {
+  async function fetchStudentsGenerated() {
     try {
-      const response = await fetchStudents(page, authorization, nameStudent);
+      const response = await fetchStudents(page, authorization, nameStudent, true);
       setTotalResult(response.data.totalResultS);
       setStudents(response.data.list);
+      setPage(page);
+      setIsLoading(true);
+    } catch (err) {
+      toast.error("Erro ao listar os estudantes");
+    }
+  }
+
+  async function fetchStudentsNeedToGenerated() {
+    try {
+      const response = await fetchStudents(page, authorization, nameStudent, false);
+      setTotalResult(response.data.totalResultS);
+      setStudentsNotGenerated(response.data.list);
       setPage(page);
       setIsLoading(true);
     } catch (err) {
@@ -54,7 +68,9 @@ export default function Students() {
 
           <div className="students-list-cards">
             <h2>Carteirinhas</h2>
-            <StudentList Students={students} />
+            <StudentList 
+              StudentsGenerated={studentsGenerated}
+              StudentsNotGenerated={studentsNotGenerated} />
           </div>
         
         </div>

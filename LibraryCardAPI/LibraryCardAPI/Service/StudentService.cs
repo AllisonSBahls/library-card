@@ -52,7 +52,7 @@ namespace LibraryCardAPI.Service
                     name = "";
                 }
 
-                var students = await _repository.FindWithPagedSearchName(name, size, offset, generated);
+                var students = await _repository.FindWithPagedSearchName(name, size, offset, generate);
 
                 var totalResult = _repository.GetCount(name);
 

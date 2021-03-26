@@ -9,8 +9,8 @@ export function createStudent(student: FormData, token: AxiosRequestConfig){
     return api.post('api/v1/students', student, token);
 }
 
-export function fetchStudents(page: number, token: AxiosRequestConfig, name: string){
-    return api.get(`api/v1/students/asc/10/${page}/?name=${name}`, token);
+export function fetchStudents(page: number, token: AxiosRequestConfig, name: string, generateStatus: Boolean){
+    return api.get(`api/v1/students/asc/10/${page}/?name=${name}&generate=${generateStatus}`, token);
 }
 
 export function findByIdStudent(id: number, token: AxiosRequestConfig){
