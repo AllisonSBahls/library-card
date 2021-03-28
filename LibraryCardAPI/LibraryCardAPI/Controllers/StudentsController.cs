@@ -77,7 +77,7 @@ namespace LibraryCardAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, StudentDTO student)
+        public async Task<IActionResult> Put(int id, [FromForm]StudentDTO student)
         {
             try
             {
