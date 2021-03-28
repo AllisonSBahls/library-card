@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify'
-import { createStudent } from "../../Services/Students";
+import { createStudent, updateStudent } from "../../Services/Students";
 import { IStudents } from "./types";
 
 type Props ={
@@ -81,35 +81,40 @@ export default function StudentForm({student}: Props) {
       imageFile: null,
       imagePhoto: student.photo
     });
-    
     var date = new Date(student.validate);
-
     setExpiration(date.toLocaleDateString("en-CA"))
   }
 
-  async function insertStudent(e: React.FormEvent){
+  async function saveStudent(e: React.FormEvent){
     e.preventDefault();
     try{
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('course', course);
-    formData.append('validate', expiration);
-    formData.append('registrationNumber', registrationNumber);
-    formData.append('photo', image.imagePhoto);
-    formData.append('imageFile', image.imageFile || defaultPhoto);
-    
-    await createStudent(formData, authorization)
-    toast.success("Estudante cadastrado");
+      const formData = new FormData();
+        formData.append('name', name);
+        formData.append('course', course);
+        formData.append('validate', expiration);
+        formData.append('registrationNumber', registrationNumber);
+        formData.append('photo', image.imagePhoto);
+        formData.append('imageFile', image.imageFile || defaultPhoto);
+         
+      if(student.id === 0){
+        await createStudent(formData, authorization)
+        toast.success("Estudante cadastrado");
+      }else{
+        await updateStudent(formData, student.id, authorization);
+        toast.success("Estudante Alterado com Sucesso");
+      }
     }catch(err){
       toast.error("Erro ao inserir o estudante");
     }
   }
 
 
+
+
   return (
     <>
       <div className="create-card">
-        <form onSubmit={insertStudent} className="form-create">
+        <form onSubmit={saveStudent} className="form-create">
           <div className="field-photo">
             <div className="field-photo-image">
                 <img className="photo" src={id !== 0 ? `https://localhost:5001/resources/images/${image.imagePhoto}`: image.imagePhoto}  alt="" />
@@ -135,7 +140,13 @@ export default function StudentForm({student}: Props) {
               <input type="date" value={expiration} onChange={e => setExpiration(e.target.value)}/>
             </div>
           </div>
-          <button type="submit" className="button-save-continue">Cadastrar Estudante</button>
+          {student.id === 0 ? 
+            <button type="submit" className="button-save-continue">Cadastrar Estudante</button> :
+            <div>
+              <button type="submit" className="button-save-continue">Salvar Estudante</button>
+              <button type="button" className="button-save-continue">Novo Estudante</button>
+            </div>}
+          
           {/* <button className="button-create-card-library">Gerar Carteirinha</button>
           <button className="button-clear">Limpar</button> */}
         </form>

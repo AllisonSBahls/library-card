@@ -17,7 +17,7 @@ export function findByIdStudent(id: number, token: AxiosRequestConfig){
     return api.get(`api/v1/students/${id}`, token);
 }
 
-export function updateStudent(student: IStudents, id: number, token: AxiosRequestConfig){
+export function updateStudent(student: FormData, id: number, token: AxiosRequestConfig){
     return api.put(`api/v1/students/${id}`, student, token);
 }
 
