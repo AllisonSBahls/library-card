@@ -97,7 +97,7 @@ export default function StudentForm() {
               <input type="Date" value={expiration} onChange={e => setExpiration(e.target.value)}/>
             </div>
           </div>
-          <button type="submit" className="button-save-continue">Gerar Carteirinha</button>
+          <button type="submit" className="button-save-continue">Cadastrar Estudante</button>
           {/* <button className="button-create-card-library">Gerar Carteirinha</button>
           <button className="button-clear">Limpar</button> */},
         </form>

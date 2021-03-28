@@ -21,7 +21,7 @@ export function updateStudent(student: IStudents, id: number, token: AxiosReques
     return api.put(`api/v1/students/${id}`, student, token);
 }
 
-export function deleteStudent(id: number){
+export function deleteStudent(id: number, token: AxiosRequestConfig){
     return api.delete(`api/v1/students/${id}`);
 }
 

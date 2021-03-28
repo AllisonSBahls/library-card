@@ -1,14 +1,14 @@
 import { IStudents } from "./types";
 import "./style.css";
 import { useEffect, useState } from "react";
-import { fetchStudents } from "../../Services/Students";
+import { deleteStudent, fetchStudents } from "../../Services/Students";
 import { toast } from "react-toastify";
 import StudentList from "./StudentList";
 import Navbar from "../Navbar";
 import StudentForm from "./StudentForm";
 
 export default function Students() {
-  const [studentsGenerated, setStudents] = useState<IStudents[]>([]);
+  const [studentsGenerated, setStudentsGenerated] = useState<IStudents[]>([]);
   const [studentsNotGenerated, setStudentsNotGenerated] = useState<IStudents[]>([]);
   const [totalResult, setTotalResult] = useState<number>(0);
   const [nameStudent, setNameStudent] = useState<string>("");
@@ -34,7 +34,7 @@ export default function Students() {
     try {
       const response = await fetchStudents(page, authorization, nameStudent, true);
       setTotalResult(response.data.totalResultS);
-      setStudents(response.data.list);
+      setStudentsGenerated(response.data.list);
       setPage(page);
       setIsLoading(true);
     } catch (err) {
@@ -54,6 +54,17 @@ export default function Students() {
     }
   }
 
+  async function removeCard(id: number){
+    try {
+      await deleteStudent(id, authorization);
+      setStudentsNotGenerated(studentsNotGenerated.filter(s => s.id !== id));
+      setStudentsGenerated(studentsGenerated.filter(s => s.id !== id));
+      toast.success("Carteirinha removida com sucesso");
+    } catch (error) {
+      toast.error("Erro ao removar a carteirinha");
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -67,10 +78,11 @@ export default function Students() {
 
 
           <div className="students-list-cards">
-            <h2>Carteirinhas</h2>
+            {/* <h2>Carteirinhas</h2> */}
             <StudentList 
               StudentsGenerated={studentsGenerated}
-              StudentsNotGenerated={studentsNotGenerated} />
+              StudentsNotGenerated={studentsNotGenerated}
+              deleteCard = {removeCard} />
           </div>
         
         </div>
