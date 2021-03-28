@@ -15,13 +15,16 @@ export default function StudentForm({student}: Props) {
     imagePhoto: defaultPhoto
   }
 
+  
   const [image, setImage] = useState(ImageProps);
   const [name, setName] = useState('');
   const [course, setCourse]= useState('');
   const [expiration, setExpiration]= useState('');
   const [registrationNumber, setRegistrationNumber] = useState('');
-
   const token = localStorage.getItem("Token");
+  
+  var expire = new Date(student.validate);
+  console.log();
 
   const authorization = {
     headers: {
@@ -69,13 +72,14 @@ export default function StudentForm({student}: Props) {
   }
   }
 
+
   return (
     <>
       <div className="create-card">
         <form onSubmit={insertStudent} className="form-create">
           <div className="field-photo">
             <div className="field-photo-image">
-                <img className="photo" src={image.imagePhoto}  alt="" />
+                <img className="photo" src={student.id !== 0 ? `https://localhost:5001/resources/images/${student.photo}`: image.imagePhoto}  alt="" />
              </div>
             <input type="file" onChange={showPreview} accept="image/*"/>
           </div>
@@ -91,16 +95,16 @@ export default function StudentForm({student}: Props) {
           <div className="field-infos">
             <div className="field-code">
               <label>Código do Sistema: </label>
-              <input type="text" value={student.registrationNumber} onChange={e => setRegistrationNumber(e.target.value)}/>
+              <input type="text" value={student.registrationNumber} onChange={(e) => {setRegistrationNumber(e.target.value)}}/>
             </div>
             <div className="field-expirate">
               <label>Validade: </label>
-              <input type="Date" value={expiration} onChange={e => setExpiration(e.target.value)}/>
+              <input type="date" value={expire.toLocaleDateString("en-CA")} onChange={e => setExpiration(e.target.value)}/>
             </div>
           </div>
           <button type="submit" className="button-save-continue">Cadastrar Estudante</button>
           {/* <button className="button-create-card-library">Gerar Carteirinha</button>
-          <button className="button-clear">Limpar</button> */},
+          <button className="button-clear">Limpar</button> */}
         </form>
         
       </div>

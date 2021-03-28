@@ -30,7 +30,7 @@ export default function StudentCard({cardStudent, deleteCard, loadCardStudent} :
             </div>
             <div className="students-input-info"> 
 
-                <label className="students-expire" >{date.toLocaleDateString()}</label> 
+                <label className="students-expire" >0{date.getMonth().toString()}/{date.getFullYear().toString()}</label> 
                 <label>Código do Sistema: </label>
                 <input className="students-registration" value={cardStudent.registrationNumber}  disabled/>
             </div>
