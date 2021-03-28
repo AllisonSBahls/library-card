@@ -5,11 +5,13 @@ type props = {
   StudentsGenerated: IStudents[];
   StudentsNotGenerated: IStudents[];
   deleteCard: (id: number) => void;
+  loadCardStudent: (id: number) => void;
 };
 
 export default function StudentList({
   StudentsGenerated,
   StudentsNotGenerated,
+  loadCardStudent,
   deleteCard
 }: props) {
   return (
@@ -23,7 +25,8 @@ export default function StudentList({
           <StudentCard 
             key={student.id} 
             cardStudent={student}
-            deleteCard={deleteCard} />
+            deleteCard={deleteCard}
+            loadCardStudent ={loadCardStudent} />
         ))}
       </div>
       <h3 className="students-list-title"> Últimas carteirinhas criadas</h3>
@@ -32,7 +35,8 @@ export default function StudentList({
           <StudentCard 
             key={student.id}
             cardStudent={student}
-            deleteCard={deleteCard} />
+            deleteCard={deleteCard} 
+            loadCardStudent ={loadCardStudent}/>
         ))}
       </div>
     </>

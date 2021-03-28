@@ -4,15 +4,16 @@ import {TiDelete} from "react-icons/ti"
 type props = {
     cardStudent: IStudents;
     deleteCard: (id: number) => void;
+    loadCardStudent: (id: number) => void
 }
 
-export default function StudentCard({cardStudent, deleteCard} : props){
+export default function StudentCard({cardStudent, deleteCard, loadCardStudent} : props){
     var date =  new Date(cardStudent.validate);
     return (
     <>
         <div className="students-content">
             <div className="students-buttons">
-                <button className="students-button-edit"><BiEdit/></button>
+                <button onClick={() => {loadCardStudent(cardStudent.id)}} className="students-button-edit"><BiEdit/></button>
                 <button onClick={() => 
                     {if (window.confirm(`Você tem certeza que deseja remover: ${cardStudent.name}`))
                     {deleteCard(cardStudent.id)}

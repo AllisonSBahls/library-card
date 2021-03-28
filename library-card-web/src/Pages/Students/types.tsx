@@ -5,7 +5,7 @@ export interface IStudents {
     registrationNumber: number
     photo: string;
     validate: Date;
-    imageFile: File;
+    imageFile: File | null;
 
 }
 export interface IPhoto{

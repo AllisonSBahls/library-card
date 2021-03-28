@@ -9,9 +9,6 @@ export default function Routes(){
                 <Route path="/" exact>
                     <Students />
                 </Route>
-                <Route path="/estudante/registrar" exact>
-                    <StudentForm />
-                </Route>
             </Switch>
         </BrowserRouter>
     )

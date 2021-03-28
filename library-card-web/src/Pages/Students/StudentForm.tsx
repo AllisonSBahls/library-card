@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { toast } from 'react-toastify'
 import { createStudent } from "../../Services/Students";
+import { IStudents } from "./types";
 
+type Props ={
+  student: IStudents;
+}
 
-
-export default function StudentForm() {
+export default function StudentForm({student}: Props) {
   const defaultPhoto = '/Image/default_photo.png'
 
   const ImageProps = {
@@ -25,6 +28,7 @@ export default function StudentForm() {
       Authorization: `Bearer token`,
     },
   };
+
 
   const showPreview = (e: any) => {
     if (e.target.files && e.target.files[0]){
@@ -65,9 +69,6 @@ export default function StudentForm() {
   }
   }
 
-  
-
-
   return (
     <>
       <div className="create-card">
@@ -80,17 +81,17 @@ export default function StudentForm() {
           </div>
           <div className="field-name">
             <label>Nome: </label>
-            <input type="text" value={name} onChange={e => setName(e.target.value)}/>
+            <input type="text" value={student.name} onChange={e => setName(e.target.value)}/>
           </div>
           <div className="field-course">
             <label>Curso: </label>
-            <input type="text" value={course} onChange={e => setCourse(e.target.value)}/>
+            <input type="text" value={student.course} onChange={e => setCourse(e.target.value)}/>
           </div>
 
           <div className="field-infos">
             <div className="field-code">
               <label>Código do Sistema: </label>
-              <input type="text" value={registrationNumber} onChange={e => setRegistrationNumber(e.target.value)}/>
+              <input type="text" value={student.registrationNumber} onChange={e => setRegistrationNumber(e.target.value)}/>
             </div>
             <div className="field-expirate">
               <label>Validade: </label>

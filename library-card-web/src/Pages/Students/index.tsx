@@ -1,15 +1,28 @@
 import { IStudents } from "./types";
 import "./style.css";
 import { useEffect, useState } from "react";
-import { deleteStudent, fetchStudents } from "../../Services/Students";
+import { deleteStudent, fetchStudents, findByIdStudent } from "../../Services/Students";
 import { toast } from "react-toastify";
 import StudentList from "./StudentList";
 import Navbar from "../Navbar";
 import StudentForm from "./StudentForm";
+import { Console } from "console";
 
 export default function Students() {
+
+  var values: IStudents = {
+    id: 0,
+    name: '',
+    course: '',
+    registrationNumber: 0,
+    photo: '',
+    validate: new Date(),
+    imageFile: null
+  }
+
   const [studentsGenerated, setStudentsGenerated] = useState<IStudents[]>([]);
   const [studentsNotGenerated, setStudentsNotGenerated] = useState<IStudents[]>([]);
+  const [student, setStudent] = useState<IStudents>(values);
   const [totalResult, setTotalResult] = useState<number>(0);
   const [nameStudent, setNameStudent] = useState<string>("");
   const [isLoading, setIsLoading] = useState<Boolean>(false);
@@ -65,6 +78,15 @@ export default function Students() {
     }
   }
 
+  async function loadCardStudent(id: number){
+    try{
+        const response = await findByIdStudent(id, authorization)
+        setStudent(response.data);
+    }catch(error){
+      toast.error("Erro ao carregar os dados da carteirinha");
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -73,7 +95,9 @@ export default function Students() {
         <div className="students">
         <div className="students-form">
           <h3 className="students-form-title">Criar Carteirinha da Biblioteca</h3>
-            <StudentForm />
+            <StudentForm 
+              student = {student}/>
+            
           </div>
 
 
@@ -82,7 +106,8 @@ export default function Students() {
             <StudentList 
               StudentsGenerated={studentsGenerated}
               StudentsNotGenerated={studentsNotGenerated}
-              deleteCard = {removeCard} />
+              deleteCard = {removeCard}
+              loadCardStudent= {loadCardStudent} />
           </div>
         
         </div>
